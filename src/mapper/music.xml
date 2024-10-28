@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 配置Mabatis映射文件 -->
+<mapper namespace="com.dao.MusicDAO">
+	<resultMap type="music" id="musicMap">
+		<id property="musicid" column="musicid" />
+		<result property="musicname" column="musicname" />
+		<result property="image" column="image" />
+		<result property="cateid" column="cateid" />
+		<result property="fileurl" column="fileurl" />
+		<result property="singer" column="singer" />
+		<result property="album" column="album" />
+		<result property="addtime" column="addtime" />
+		<result property="hits" column="hits" />
+		<result property="num" column="num" />
+		<result property="contents" column="contents" />
+		<result property="catename" column="catename" />
+	</resultMap>
+	<!-- 插入语句 DAO通过id调用此配置 -->
+	<insert id="insertMusic" parameterType="music">
+		insert into music(musicid , musicname , image , cateid , fileurl , singer , album , addtime , hits , num , contents ) values(#{musicid} , #{musicname} , #{image} ,
+		#{cateid} , #{fileurl} , #{singer} , #{album} , #{addtime} , #{hits} , #{num} , #{contents} )
+	</insert>
+	<!-- 更新语句 DAO通过id调用此配置 -->
+	<update id="updateMusic" parameterType="music">
+		update music set musicname=#{musicname} , image=#{image} , cateid=#{cateid} , fileurl=#{fileurl} , singer=#{singer} , album=#{album} , addtime=#{addtime} ,
+		hits=#{hits} , num=#{num} , contents=#{contents} where musicid=#{musicid}
+	</update>
+	<!-- 按主键删除 DAO通过id调用此配置 -->
+	<delete id="deleteMusic" parameterType="String">
+		delete from music where musicid = #{musicid}
+	</delete>
+	<!-- 查询全部信息 DAO通过id调用此配置 -->
+	<select id="getAllMusic" resultMap="musicMap">
+		select a.* , b.catename from music a , cate b where a.cateid = b.cateid order by musicid desc
+	</select>
+	<select id="getMusicByNews" resultMap="musicMap">
+		select a.* , b.catename from music a , cate b where a.cateid = b.cateid
+		order by musicid desc
+		limit 5
+	</select>
+
+	<select id="getMusicByHot" resultMap="musicMap">
+		select a.* , b.catename from music a , cate b where a.cateid = b.cateid
+		order by hits desc limit 10
+	</select>
+
+	<select id="getMusicByCate" parameterType="String" resultMap="musicMap">
+		select a.* , b.catename from music a , cate b where a.cateid = b.cateid
+		and a.cateid=#{cateid} order by hits desc limit 5
+	</select>
+	<!-- 按主键查询 DAO通过id调用此配置 -->
+	<select id="getMusicById" parameterType="String" resultMap="musicMap">
+		select a.* , b.catename from music a , cate b where a.cateid = b.cateid and musicid=#{musicid} order by musicid desc
+	</select>
+	<!-- 按条件精确查询 DAO通过id调用此配置 -->
+	<select id="getMusicByCond" parameterType="music" resultMap="musicMap">
+		select a.* , b.catename from music a , cate b where a.cateid = b.cateid
+		<if test="musicname != null and '' != musicname">
+			and a.musicname = #{musicname}
+		</if>
+		<if test="image != null and '' != image">
+			and a.image = #{image}
+		</if>
+		<if test="cateid != null and '' != cateid">
+			and a.cateid = #{cateid}
+		</if>
+		<if test="fileurl != null and '' != fileurl">
+			and a.fileurl = #{fileurl}
+		</if>
+		<if test="singer != null and '' != singer">
+			and a.singer = #{singer}
+		</if>
+		<if test="album != null and '' != album">
+			and a.album = #{album}
+		</if>
+		<if test="addtime != null and '' != addtime">
+			and a.addtime = #{addtime}
+		</if>
+		<if test="hits != null and '' != hits">
+			and a.hits = #{hits}
+		</if>
+		<if test="num != null and '' != num">
+			and a.num = #{num}
+		</if>
+		<if test="contents != null and '' != contents">
+			and a.contents = #{contents}
+		</if>
+	</select>
+	<!-- 按条件模糊查询 DAO通过id调用此配置 -->
+	<select id="getMusicByLike" parameterType="music" resultMap="musicMap">
+		select a.* , b.catename from music a , cate b where a.cateid = b.cateid
+		<if test="musicname != null and '' != musicname">
+			and a.musicname like CONCAT('%', CONCAT(#{musicname}, '%'))
+		</if>
+		<if test="image != null and '' != image">
+			and a.image like CONCAT('%', CONCAT(#{image}, '%'))
+		</if>
+		<if test="cateid != null and '' != cateid">
+			and b.catename like CONCAT('%', CONCAT(#{cateid}, '%'))
+		</if>
+		<if test="fileurl != null and '' != fileurl">
+			and a.fileurl like CONCAT('%', CONCAT(#{fileurl}, '%'))
+		</if>
+		<if test="singer != null and '' != singer">
+			and a.singer like CONCAT('%', CONCAT(#{singer}, '%'))
+		</if>
+		<if test="album != null and '' != album">
+			and a.album like CONCAT('%', CONCAT(#{album}, '%'))
+		</if>
+		<if test="addtime != null and '' != addtime">
+			and a.addtime like CONCAT('%', CONCAT(#{addtime}, '%'))
+		</if>
+		<if test="hits != null and '' != hits">
+			and a.hits like CONCAT('%', CONCAT(#{hits}, '%'))
+		</if>
+		<if test="num != null and '' != num">
+			and a.num like CONCAT('%', CONCAT(#{num}, '%'))
+		</if>
+		<if test="contents != null and '' != contents">
+			and a.contents like CONCAT('%', CONCAT(#{contents}, '%'))
+		</if>
+	</select>
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--  -->
